@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9th Grade Adv Bio: Ch 2 & 3 Ultimate Study Deck (84 Cards)</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --accent-ch2: #2980b9;
+            --accent-ch3: #27ae60;
+            --accent-frq: #8e44ad;
+            --accent-nom: #d35400;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.1rem;
+            color: #1a252f;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+
+        .controls {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button.filter-btn {
+            background-color: #e2e8f0;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #4a5568;
+            transition: all 0.2s ease;
+        }
+
+        button.filter-btn.active {
+            background-color: #2b6cb0;
+            color: white;
+            box-shadow: 0 4px 10px rgba(43, 108, 176, 0.3);
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #e2e8f0;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #319795;
+            transition: width 0.3s ease;
+        }
+
+        .flashcard-wrapper {
+            width: 100%;
+            max-width: 800px;
+            height: 460px;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--card-bg);
+            border: 2px solid #edf2f7;
+            overflow-y: auto;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #fafbfc;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .badge.ch2 { background-color: var(--accent-ch2); }
+        .badge.ch3 { background-color: var(--accent-ch3); }
+        .badge.frq { background-color: var(--accent-frq); }
+        .badge.nom { background-color: var(--accent-nom); }
+
+        .card-num {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        .card-content {
+            margin: auto 0;
+            text-align: left;
+        }
+
+        .card-content h2 {
+            font-size: 1.15rem;
+            line-height: 1.45;
+            color: #2d3748;
+        }
+
+        .card-content p, .card-content ul {
+            font-size: 0.98rem;
+            line-height: 1.5;
+            color: #4a5568;
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .card-content li {
+            margin-bottom: 6px;
+        }
+
+        .card-footer-hint {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .navigation {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background-color: #edf2f7;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #2d3748;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover { background-color: #e2e8f0; }
+
+        .status-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-btn {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        .status-btn.need-review { background-color: #e53e3e; }
+        .status-btn.mastered { background-color: #38a169; }
+        .status-btn:hover { opacity: 0.85; }
+
+        .kbd-hints {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #718096;
+        }
+
+        kbd {
+            background: #e2e8f0;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        code {
+            background-color: #edf2f7;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #c53030;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e0;
+            padding: 5px 8px;
+            text-align: left;
+        }
+
+        th { background-color: #edf2f7; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Adv Bio: Ch 2 & 3 Ultimate Study Deck</h1>
+        <p class="subtitle">84 Flashcards | 30 Ch 2 Multiple Choice | 30 Ch 3 Multiple Choice | All 15 FRQs | Nomenclature & Isomers</p>
+    </header>
+
+    <div class="controls">
+        <button class="filter-btn active" onclick="filterCards('all')">All Cards (84)</button>
+        <button class="filter-btn" onclick="filterCards('frq')">All 15 FRQs</button>
+        <button class="filter-btn" onclick="filterCards('ch2_mc')">Ch 2 MC (30)</button>
+        <button class="filter-btn" onclick="filterCards('ch3_mc')">Ch 3 MC (30)</button>
+        <button class="filter-btn" onclick="filterCards('nom')">Nomenclature & Isomers (9)</button>
+        <button class="filter-btn" onclick="filterCards('review')">Needs Review (<span id="review-count">0</span>)</button>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="flashcard-wrapper">
+        <div class="flashcard" id="card" onclick="flipCard()">
+            <div class="card-face card-front">
+                <div class="card-header">
+                    <span class="badge" id="card-badge">Category</span>
+                    <span class="card-num" id="card-num">Card 1 / 84</span>
+                </div>
+                <div class="card-content">
+                    <h2 id="card-question">Question text loading...</h2>
+                </div>
+                <div class="card-footer-hint">Click card or press [SPACE] to flip</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="card-header">
+                    <span class="badge" id="card-badge-back">Category</span>
+                    <span class="card-num" id="card-num-back">Card 1 / 84</span>
+                </div>
+                <div class="card-content" id="card-answer">
+                    Answer text loading...
+                </div>
+                <div class="card-footer-hint">Rate confidence below or press [←] / [→]</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="prevCard(event)">← Previous</button>
+        <div class="status-btns">
+            <button class="status-btn need-review" onclick="markReview(event, true)">Need Review</button>
+            <button class="status-btn mastered" onclick="markReview(event, false)">Mastered ✓</button>
+        </div>
+        <button class="nav-btn" onclick="nextCard(event)">Next →</button>
+    </div>
+
+    <div class="kbd-hints">
+        Shortcuts: <kbd>Space</kbd> Flip | <kbd>←</kbd> Prev | <kbd>→</kbd> Next | <kbd>1</kbd> Need Review | <kbd>2</kbd> Mastered
+    </div>
+
+    <script>
+        const cardsData = [
+            // ==========================================
+            // SECTION 1: ALL 15 FREE RESPONSE QUESTIONS
+            // ==========================================
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #1 (Ch 3)',
+                question: "FRQ 1: Explain how dehydration and hydrolysis reactions work, how they are used, and give examples of each. (6 pts)",
+                answer: "<ul><li><b>Dehydration Reaction (Anabolic):</b> Connects monomers into polymers by removing a water molecule (OH from one monomer, H from another). Builds macromolecules.<br><i>Example:</i> Joining glucose molecules to form maltose or starch.</li><li><b>Hydrolysis Reaction (Catabolic):</b> Breaks polymers into monomers by adding a water molecule. Used in digestion.<br><i>Example:</i> Digesting starch into glucose monomers using amylase.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #2 (Ch 2)',
+                question: "FRQ 2: List and explain 3 properties of water that make it important for living things to survive. (6 pts)",
+                answer: "<ul><li><b>1. High Specific Heat Capacity:</b> Resists temperature changes, stabilizing internal cell temperatures and climate.</li><li><b>2. Cohesion & Adhesion:</b> Cohesion (water-to-water) and Adhesion (water-to-vessels) drive plant transpiration.</li><li><b>3. Density Anomaly (Ice Floats):</b> Hydrogen bonds expand ice into a lattice, insulating liquid water below for aquatic life.</li><li><b>4. Solvent of Life:</b> Polarity dissolves essential ions and polar biological molecules.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #3 (Ch 2)',
+                question: "FRQ 3: Why do atoms want a full outer shell of electrons and how do they get them? (3 pts)",
+                answer: "<ul><li><b>Why:</b> To reach maximum chemical stability and lowest potential energy (octet rule).</li><li><b>How:</b><br>1. <i>Covalent Bonding:</i> Sharing valence electron pairs.<br>2. <i>Ionic Bonding:</i> Gaining or losing electrons to form stable cations (+) or anions (-).</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #4 (Ch 3)',
+                question: "FRQ 4: What is the difference between a saturated and unsaturated lipid? Give an example of each and how it is used. (4 pts)",
+                answer: "<ul><li><b>Saturated Lipid:</b> No double bonds; saturated with H. Straight chains pack tight → solid at room temp (e.g., Butter). Long-term energy storage in animals.</li><li><b>Unsaturated Lipid:</b> Contains 1+ cis double bonds (C=C), causing kinks. Cannot pack tight → liquid oil at room temp (e.g., Olive oil). Energy storage in plant seeds.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #5 (Ch 2)',
+                question: "FRQ 5: What kind of molecules are used to make hydrogen bonds and give an example of how it works? (3 pts)",
+                answer: "<ul><li><b>Molecules Used:</b> Polar covalent molecules containing electronegative atoms (like O or N) bonded to Hydrogen.</li><li><b>Example (Water H₂O):</b> Oxygen pulls electrons toward itself (partial negative charge δ-), leaving Hydrogen with a partial positive charge (δ+). The δ+ H of one H₂O is attracted to the δ- O of another H₂O.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #6 (Ch 3)',
+                question: "FRQ 6: Create a chart with each macromolecule, monomer, polymer, bond, examples, and uses. (8 pts)",
+                answer: "<table><tr><th>Macromolecule</th><th>Monomer</th><th>Polymer</th><th>Bond Type</th><th>Examples & Uses</th></tr><tr><td><b>Carbs</b></td><td>Monosaccharide</td><td>Polysaccharide</td><td>Glycosidic Linkage</td><td>Starch/Glycogen (Energy), Cellulose (Structure)</td></tr><tr><td><b>Lipids</b></td><td>Glycerol + Fatty Acids</td><td>Triacylglycerol</td><td>Ester Linkage</td><td>Fats/Oils (Energy), Phospholipids (Membranes)</td></tr><tr><td><b>Proteins</b></td><td>Amino Acid</td><td>Polypeptide</td><td>Peptide Bond</td><td>Enzymes, Hemoglobin, Collagen</td></tr><tr><td><b>Nucleic Acids</b></td><td>Nucleotide</td><td>DNA / RNA</td><td>Phosphodiester Bond</td><td>Genetics (DNA), Protein Synthesis (RNA)</td></tr></table>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #7 (Ch 3)',
+                question: "FRQ 7: What are the 3 types of isomers? Explain the difference between them and give an example of each. (6 pts)",
+                answer: "<ul><li><b>1. Structural Isomers:</b> Differ in covalent arrangement of atoms (e.g., Butane vs. Isobutane).</li><li><b>2. Cis-Trans (Geometric) Isomers:</b> Differ in spatial arrangement around a rigid C=C double bond (e.g., <i>cis</i>-2-butene vs. <i>trans</i>-2-butene).</li><li><b>3. Enantiomers:</b> Non-superimposable mirror images around an asymmetric carbon (e.g., L-Dopa vs. D-Dopa).</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #8 (Ch 2)',
+                question: "FRQ 8: What is pH and explain why it is important to living things. Use an example? (5 pts)",
+                answer: "<ul><li><b>What it is:</b> A logarithmic measure of hydrogen ion concentration [H⁺] (pH = -log[H⁺]). Scale is 0 to 14.</li><li><b>Importance:</b> Biological enzymes and cellular structures require specific pH levels to maintain functional 3D folding.</li><li><b>Example:</b> Human blood must stay between pH 7.35–7.45. Shifts outside this range disrupt hemoglobin and cellular metabolism.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #9 (Ch 3)',
+                question: "FRQ 9: Name 2 functional groups, create a molecule that contains one, and explain what \"function\" it gives the hydrocarbon. (6 pts)",
+                answer: "<ul><li><b>Hydroxyl (-OH):</b> Adds polarity and water solubility (e.g., Ethanol). Converts inert alkane into an alcohol.</li><li><b>Carboxyl (-COOH):</b> Acts as an acid by donating H⁺ in solution (e.g., Acetic Acid / Vinegar).</li><li><b>Function Added:</b> Transforms hydrophobic, non-reactive hydrocarbons into polar, reactive organic compounds capable of biological activity.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #10 (Ch 3)',
+                question: "FRQ 10: Explain 2 differences between the 2 polymers of nucleic acids. (4 pts)",
+                answer: "<b>DNA vs. RNA Differences:</b><ul><li><b>1. Sugar Unit:</b> DNA contains <i>Deoxyribose</i> (lacks 2' -OH); RNA contains <i>Ribose</i>.</li><li><b>2. Nitrogenous Bases:</b> DNA uses <b>Thymine (T)</b>; RNA uses <b>Uracil (U)</b> instead.</li><li><b>3. Strands:</b> DNA is double-stranded helix; RNA is typically single-stranded.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #11 (Ch 3)',
+                question: "FRQ 11: List and explain 3 functions that proteins are responsible for in living things. (6 pts)",
+                answer: "<ul><li><b>1. Enzymatic Catalysis:</b> Speeds up metabolic reactions without being consumed (e.g., Lactase).</li><li><b>2. Transport:</b> Carries molecules across cell membranes or body fluids (e.g., Hemoglobin carries O₂).</li><li><b>3. Structural Support:</b> Provides framework and tensile strength (e.g., Collagen, Keratin).</li><li><i>Others: Defense (Antibodies), Hormonal Signaling (Insulin).</i></li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #12 (Ch 3)',
+                question: "FRQ 12: What are the 4 levels of protein folding and give an example of each? (8 pts)",
+                answer: "<ul><li><b>1° Primary:</b> Sequence of amino acids joined by covalent peptide bonds.</li><li><b>2° Secondary:</b> α-helices and β-pleated sheets formed by hydrogen bonds along the peptide backbone.</li><li><b>3° Tertiary:</b> 3D folding driven by R-group interactions (H-bonds, ionic bonds, hydrophobic interactions, disulfide bridges).</li><li><b>4° Quaternary:</b> Association of 2+ polypeptide chains into a functional macromolecule (e.g., Hemoglobin).</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #13 (Ch 2)',
+                question: "FRQ 13: What is acid reflux and how does the medicine that you take make your stomach feel better? (3 pts)",
+                answer: "<ul><li><b>Acid Reflux:</b> Hydrochloric acid from the stomach enters the unprotected esophagus, irritating the lining.</li><li><b>Medicine Mechanism:</b> Antacids contain weak <b>bases</b> (e.g., Mg(OH)₂ or CaCO₃) that neutralize free H⁺ ions (H⁺ + OH⁻ → H₂O), raising esophagus/stomach pH.</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #14 (Ch 2)',
+                question: "FRQ 14: Using an example element, what would happen to the element if you changed the number of electrons, protons, or neutrons? (4 pts)",
+                answer: "<b>Example Element: Carbon (6 Protons)</b><ul><li><b>Change Protons (+p⁺):</b> Alters the atomic number; turns Carbon into a completely different element (e.g., 7 Protons = Nitrogen).</li><li><b>Change Neutrons (n⁰):</b> Forms an <b>Isotope</b> of Carbon (e.g., Carbon-12 vs. radioactive Carbon-14).</li><li><b>Change Electrons (e⁻):</b> Forms an <b>Ion</b> (Charge changes: loss of e⁻ = Cation; gain = Anion).</li></ul>"
+            },
+            {
+                category: 'frq',
+                categoryLabel: 'FRQ #15 (Ch 2)',
+                question: "FRQ 15: What makes a molecule hydrophobic or hydrophilic? Give an example of each. Can a molecule be both? Explain. (4 pts)",
+                answer: "<ul><li><b>Hydrophilic:</b> Polar or charged molecules that attract water (e.g., Sugar, Salt).</li><li><b>Hydrophobic:</b> Nonpolar molecules that repel water (e.g., Oils, Fats).</li><li><b>Can it be both?</b> YES! Called <b>Amphipathic</b>. Example: <i>Phospholipids</i> have a polar hydrophilic head and nonpolar hydrophobic tails.</li></ul>"
+            },
+
+            // ==========================================
+            // SECTION 2: CHAPTER 2 MULTIPLE CHOICE (30 QUESTIONS)
+            // ==========================================
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #1',
+                question: "MC 1: Which four elements make up approximately 96% of living matter?\n\nA) Carbon, Oxygen, Calcium, Sulfur\nB) Carbon, Hydrogen, Oxygen, Nitrogen\nC) Carbon, Hydrogen, Sodium, Chlorine\nD) Nitrogen, Phosphorus, Potassium, Carbon",
+                answer: "<b>Correct Answer: B) Carbon, Hydrogen, Oxygen, Nitrogen</b><br><br><i>Explanation:</i> These four elements form the primary backbone of carbohydrates, lipids, proteins, and nucleic acids."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #2',
+                question: "MC 2: An atom of Carbon has an atomic number of 6 and a mass number of 14. How many neutrons does this atom have?\n\nA) 6\nB) 8\nC) 14\nD) 20",
+                answer: "<b>Correct Answer: B) 8</b><br><br><i>Explanation:</i> Mass Number (14) - Atomic Number / Protons (6) = 8 Neutrons. (This is Carbon-14)."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #3',
+                question: "MC 3: What determines the chemical reactivity and bonding properties of an atom?\n\nA) The number of neutrons in the nucleus\nB) The total mass of the atom\nC) The number of electrons in its valence shell\nD) The ratio of protons to neutrons",
+                answer: "<b>Correct Answer: C) The number of electrons in its valence shell</b><br><br><i>Explanation:</i> Unpaired electrons in the outermost (valence) shell dictate how an atom interacts and bonds with other atoms."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #4',
+                question: "MC 4: Radioactive isotopes are useful in biological research because:\n\nA) They are completely stable and do not change over time\nB) They act as radioactive tracers that can be detected as they decay\nC) They convert nonpolar molecules into polar ones\nD) They neutralize strong acids in cells",
+                answer: "<b>Correct Answer: B) They act as radioactive tracers that can be detected as they decay</b><br><br><i>Explanation:</i> Radioisotopes decay spontaneously, emitting detectable radiation used in radiometric dating and medical imaging."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #5',
+                question: "MC 5: What type of bond is formed when two atoms share a pair of valence electrons equally?\n\nA) Polar covalent bond\nB) Ionic bond\nC) Nonpolar covalent bond\nD) Hydrogen bond",
+                answer: "<b>Correct Answer: C) Nonpolar covalent bond</b><br><br><i>Explanation:</i> Equal electron sharing occurs when two atoms have nearly identical electronegativities (e.g., C-H or O=O)."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #6',
+                question: "MC 6: Water molecules are polar because:\n\nA) Oxygen is more electronegative than hydrogen and pulls shared electrons closer\nB) Hydrogen is more electronegative than oxygen\nC) The electrons are shared completely equally\nD) Water forms ionic bonds between oxygen and hydrogen",
+                answer: "<b>Correct Answer: A) Oxygen is more electronegative than hydrogen and pulls shared electrons closer</b><br><br><i>Explanation:</i> Oxygen holds a partial negative charge (δ-) while hydrogen holds a partial positive charge (δ+)."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #7',
+                question: "MC 7: An ionic bond forms as a result of:\n\nA) Sharing of electrons between nonmetals\nB) Electrostatic attraction between oppositely charged ions\nC) Hydrogen bonding between polar molecules\nD) Van der Waals interactions in nonpolar chains",
+                answer: "<b>Correct Answer: B) Electrostatic attraction between oppositely charged ions</b><br><br><i>Explanation:</i> Transfer of electrons creates positive cations and negative anions that attract each other."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #8',
+                question: "MC 8: Which weak chemical interaction occurs when transient local charges enable nonpolar molecules to stick together briefly?\n\nA) Ionic bond\nB) Peptide bond\nC) Van der Waals interaction\nD) Covalent bond",
+                answer: "<b>Correct Answer: C) Van der Waals interaction</b><br><br><i>Explanation:</i> Temporary fluctuations in electron distributions create instantaneous micro-dipoles."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #9',
+                question: "MC 9: A single water molecule can form hydrogen bonds with up to how many neighboring water molecules?\n\nA) 2\nB) 3\nC) 4\nD) 6",
+                answer: "<b>Correct Answer: C) 4</b><br><br><i>Explanation:</i> The central oxygen can form 2 hydrogen bonds (via its lone pairs) and each hydrogen can form 1."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #10',
+                question: "MC 10: High surface tension in water, allowing insects like water striders to walk on it, is due to:\n\nA) Adhesion to insect feet\nB) Cohesion among water molecules via hydrogen bonds\nC) High specific heat\nD) Ionic bonding",
+                answer: "<b>Correct Answer: B) Cohesion among water molecules via hydrogen bonds</b><br><br><i>Explanation:</i> Cohesion creates a collective lattice strength at the air-water interface."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #11',
+                question: "MC 11: Adhesion of water refers to:\n\nA) Water molecules sticking to other water molecules\nB) Water molecules sticking to polar cell walls or surface vessels\nC) Water evaporating from plant leaves\nD) Ice floating on top of liquid water",
+                answer: "<b>Correct Answer: B) Water molecules sticking to polar cell walls or surface vessels</b><br><br><i>Explanation:</i> Adhesion is the attraction between water and a different polar substance."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #12',
+                question: "MC 12: Why does water have an unusually high specific heat?\n\nA) Covalent bonds take a lot of heat to break\nB) Heat must be absorbed to break hydrogen bonds before molecules can move faster\nC) Water is a nonpolar molecule\nD) Water forms ionic lattice crystals",
+                answer: "<b>Correct Answer: B) Heat must be absorbed to break hydrogen bonds before molecules can move faster</b><br><br><i>Explanation:</i> Much of the added energy is used to disrupt hydrogen bonds rather than immediately increasing kinetic energy."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #13',
+                question: "MC 13: Evaporative cooling by sweating protects body temperature because:\n\nA) The coolest molecules evaporate first\nB) The hottest molecules with the highest kinetic energy evaporate first, leaving cooler liquid behind\nC) Water breaks down into hydrogen gas\nD) Sweat absorbs heat without changing phase",
+                answer: "<b>Correct Answer: B) The hottest molecules with the highest kinetic energy evaporate first, leaving cooler liquid behind</b><br><br><i>Explanation:</i> High heat of vaporization removes thermal energy as gas escapes."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #14',
+                question: "MC 14: Why is solid ice less dense than liquid water?\n\nA) Hydrogen bonds break and contract the lattice\nB) Hydrogen bonds lock water molecules into a rigid, spacious crystalline structure\nC) Ice loses hydrogen atoms as it freezes\nD) Liquid water contains dissolved gas bubbles that ice lacks",
+                answer: "<b>Correct Answer: B) Hydrogen bonds lock water molecules into a rigid, spacious crystalline structure</b><br><br><i>Explanation:</i> This structure expands the volume, decreasing density and making ice float."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #15',
+                question: "MC 15: When table salt (NaCl) dissolves in water, the positive Sodium ions (Na⁺) are surrounded by water's:\n\nA) Partially positive hydrogen atoms\nB) Partially negative oxygen atoms\nC) Nonpolar hydrocarbon tails\nD) Covalent double bonds",
+                answer: "<b>Correct Answer: B) Partially negative oxygen atoms</b><br><br><i>Explanation:</i> The partial negative charge δ- on oxygen attracts the positive cation Na⁺ to form a hydration shell."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #16',
+                question: "MC 16: Hydrophobic substances such as vegetable oil are:\n\nA) Nonpolar molecules that repulsed/excluded by polar water\nB) Charged ions that dissolve easily in water\nC) Highly polar covalent molecules\nD) Strong acids that donate H⁺",
+                answer: "<b>Correct Answer: A) Nonpolar molecules that repulsed/excluded by polar water</b><br><br><i>Explanation:</i> Water molecules prefer hydrogen bonding with each other over nonpolar hydrocarbon chains."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #17',
+                question: "MC 17: A solution with a pH of 3 has how many times MORE H⁺ ions than a solution with a pH of 6?\n\nA) 3 times\nB) 30 times\nC) 300 times\nD) 1,000 times",
+                answer: "<b>Correct Answer: D) 1,000 times</b><br><br><i>Explanation:</i> The pH scale is logarithmic (base 10). A difference of 3 pH units = 10³ = 1,000-fold difference in [H⁺]."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #18',
+                question: "MC 18: A substance that increases the hydrogen ion [H⁺] concentration of a solution is called a(n):\n\nA) Base\nB) Acid\nC) Buffer\nD) Isotope",
+                answer: "<b>Correct Answer: B) Acid</b><br><br><i>Explanation:</i> Acids donate free H⁺ ions into aqueous solution, lowering the pH below 7."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #19',
+                question: "MC 19: Human blood maintains a stable pH around 7.4. If blood pH drops toward 7.1, what will a biological buffer do?\n\nA) Release additional H⁺ ions into blood\nB) Accept excess H⁺ ions out of the blood\nC) Produce basic hydroxyl ions to destroy blood cells\nD) Evaporate excess water",
+                answer: "<b>Correct Answer: B) Accept excess H⁺ ions out of the blood</b><br><br><i>Explanation:</i> Buffers absorb excess H⁺ when pH drops to maintain homeostatic balance."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #20',
+                question: "MC 20: How do antacids relieve heartburn caused by acid reflux?\n\nA) By adding hydrochloric acid to the stomach\nB) By providing bases (e.g. OH⁻) that neutralize excess free H⁺ ions into water\nC) By lowering stomach pH below 1.0\nD) By dissolving lipids in the esophagus",
+                answer: "<b>Correct Answer: B) By providing bases (e.g. OH⁻) that neutralize excess free H⁺ ions into water</b><br><br><i>Explanation:</i> Neutralization reaction: H⁺ + OH⁻ → H₂O raises pH."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #21',
+                question: "MC 21: Which subatomic particles reside inside the atomic nucleus?\n\nA) Protons and Electrons\nB) Neutrons and Electrons\nC) Protons and Neutrons\nD) Electrons only",
+                answer: "<b>Correct Answer: C) Protons and Neutrons</b><br><br><i>Explanation:</i> Protons (+1) and Neutrons (neutral) form the dense atomic core."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #22',
+                question: "MC 22: What happens if an atom gains an extra electron?\n\nA) It becomes a positively charged cation\nB) It becomes a negatively charged anion\nC) Its atomic number increases by 1\nD) It transforms into an isotope",
+                answer: "<b>Correct Answer: B) It becomes a negatively charged anion</b><br><br><i>Explanation:</i> Gaining negative charge (e⁻) creates an anion."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #23',
+                question: "MC 23: Pure water at 25°C has a pH of 7 because:\n\nA) [H⁺] is equal to [OH⁻]\nB) It contains zero hydrogen ions\nC) It is composed entirely of nonpolar bonds\nD) It acts only as an acid",
+                answer: "<b>Correct Answer: A) [H⁺] is equal to [OH⁻]</b><br><br><i>Explanation:</i> Neutral pH 7 means concentrations of H⁺ and OH⁻ are equal (10⁻⁷ M each)."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #24',
+                question: "MC 24: What type of bond holds the hydrogen and oxygen atoms together WITHIN a single water molecule?\n\nA) Hydrogen bond\nB) Polar covalent bond\nC) Ionic bond\nD) Nonpolar covalent bond",
+                answer: "<b>Correct Answer: B) Polar covalent bond</b><br><br><i>Explanation:</i> Polar covalent bonds link atoms inside the molecule; hydrogen bonds form between separate molecules."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #25',
+                question: "MC 25: Which property of water allows tall trees to pull water up 300 feet from roots to leaves?\n\nA) High density of solid ice\nB) Cohesion and Adhesion working together in transpiration\nC) Neutral pH of 7\nD) Low heat of vaporization",
+                answer: "<b>Correct Answer: B) Cohesion and Adhesion working together in transpiration</b><br><br><i>Explanation:</i> Cohesion holds the water column together; adhesion prevents water from falling back down xylem walls."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #26',
+                question: "MC 26: Trace elements are those that:\n\nA) Make up 96% of living matter\nB) Are required by an organism in only minute quantities\nC) Are non-essential for life\nD) Are found only in synthetic lab compounds",
+                answer: "<b>Correct Answer: B) Are required by an organism in only minute quantities</b><br><br><i>Explanation:</i> Elements like Iodine or Iron are essential but needed in micro amounts."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #27',
+                question: "MC 27: What is the valence capacity (number of covalent bonds it can form) of Oxygen (Atomic # 8)?\n\nA) 1\nB) 2\nC) 3\nD) 4",
+                answer: "<b>Correct Answer: B) 2</b><br><br><i>Explanation:</i> Oxygen has 6 valence electrons; it needs 2 more to complete its octet."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #28',
+                question: "MC 28: A solution with a pH of 12 is considered:\n\nA) Strongly acidic\nB) Weakly acidic\nC) Neutral\nD) Strongly basic (alkaline)",
+                answer: "<b>Correct Answer: D) Strongly basic (alkaline)</b><br><br><i>Explanation:</i> pH values above 7 indicate basic solutions with low [H⁺] and high [OH⁻]."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #29',
+                question: "MC 29: What happens when two atoms are isotonic in electronegativity and share electrons?\n\nA) An ionic bond forms\nB) A nonpolar covalent bond forms\nC) Hydrogen bonds break\nD) Water dissociates",
+                answer: "<b>Correct Answer: B) A nonpolar covalent bond forms</b><br><br><i>Explanation:</i> Equal electron sharing occurs between atoms of equal electronegativity."
+            },
+            {
+                category: 'ch2_mc ch2',
+                categoryLabel: 'Ch 2 MC #30',
+                question: "MC 30: Why does water insulate underlying aquatic marine life during cold winters?\n\nA) Ice sinks to the bottom, pushing warm water up\nB) Ice floats on top and creates an insulating surface blanket\nC) Water loses density as heat is added\nD) Ice absorbs oxygen from the air",
+                answer: "<b>Correct Answer: B) Ice floats on top and creates an insulating surface blanket</b><br><br><i>Explanation:</i> Because ice floats, it insulates the liquid water underneath from freezing solid."
+            },
+
+            // ==========================================
+            // SECTION 3: CHAPTER 3 MULTIPLE CHOICE (30 QUESTIONS)
+            // ==========================================
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #1',
+                question: "MC 1: Dehydration synthesis (condensation reaction) works by:\n\nA) Adding a water molecule to break a polymer apart\nB) Removing a water molecule to form a covalent bond between monomers\nC) Converting polar molecules into nonpolar ones\nD) Denaturing functional proteins",
+                answer: "<b>Correct Answer: B) Removing a water molecule to form a covalent bond between monomers</b><br><br><i>Explanation:</i> An -OH group from one monomer and an -H from another combine to release H₂O."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #2',
+                question: "MC 2: Which process breaks down polymers into individual monomers during food digestion?\n\nA) Dehydration synthesis\nB) Hydrolysis\nC) Esterification\nD) Polymerization",
+                answer: "<b>Correct Answer: B) Hydrolysis</b><br><br><i>Explanation:</i> Hydrolysis (\"water breaking\") adds a water molecule to split covalent bonds."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #3',
+                question: "MC 3: Structural isomers differ in:\n\nA) Spatial arrangement around a C=C double bond\nB) Covalent arrangement of their atoms\nC) Mirror-image symmetry around asymmetric carbon\nD) Types of functional groups present",
+                answer: "<b>Correct Answer: B) Covalent arrangement of their atoms</b><br><br><i>Explanation:</i> Structural isomers have the same molecular formula but different bonding connectivity."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #4',
+                question: "MC 4: Cis-trans (geometric) isomers require which structural feature?\n\nA) An asymmetric carbon bonded to 4 different groups\nB) A rigid double bond (C=C) restricting rotation\nC) A phosphate functional group\nD) A triple bond",
+                answer: "<b>Correct Answer: B) A rigid double bond (C=C) restricting rotation</b><br><br><i>Explanation:</i> Cis = substituents on same side; Trans = substituents on opposite sides."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #5',
+                question: "MC 5: Enantiomers are organic molecules that:\n\nA) Differ in covalent bonding order\nB) Are non-superimposable mirror images of each other\nC) Contain identical straight carbon chains\nD) Form ring structures in water",
+                answer: "<b>Correct Answer: B) Are non-superimposable mirror images of each other</b><br><br><i>Explanation:</i> Enantiomers occur around asymmetric carbons (e.g., L-Dopa vs D-Dopa)."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #6',
+                question: "MC 6: Which functional group acts as an acid by donating H⁺ into solution?\n\nA) Amino group (-NH₂)\nB) Hydroxyl group (-OH)\nC) Carboxyl group (-COOH)\nD) Methyl group (-CH₃)",
+                answer: "<b>Correct Answer: C) Carboxyl group (-COOH)</b><br><br><i>Explanation:</i> The -COOH group dissociates to -COO⁻ + H⁺."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #7',
+                question: "MC 7: Which functional group acts as a base by picking up H⁺ from solution?\n\nA) Amino group (-NH₂)\nB) Carbonyl group (>C=O)\nC) Sulfhydryl group (-SH)\nD) Phosphate group (-OPO₃²⁻)",
+                answer: "<b>Correct Answer: A) Amino group (-NH₂)</b><br><br><i>Explanation:</i> The -NH₂ group accepts H⁺ to become -NH₃⁺."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #8',
+                question: "MC 8: What type of covalent linkage joins monosaccharides into polysaccharides?\n\nA) Peptide bond\nB) Glycosidic linkage\nC) Ester linkage\nD) Phosphodiester bond",
+                answer: "<b>Correct Answer: B) Glycosidic linkage</b><br><br><i>Explanation:</i> Monosaccharides are joined by glycosidic bonds formed via dehydration synthesis."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #9',
+                question: "MC 9: Why can humans digest starch but NOT cellulose?\n\nA) Starch is nonpolar while cellulose is polar\nB) Humans have enzymes that hydrolyze α-glycosidic linkages (starch) but lack enzymes for β-linkages (cellulose)\nC) Cellulose contains nitrogen\nD) Starch consists of amino acids",
+                answer: "<b>Correct Answer: B) Humans have enzymes that hydrolyze α-glycosidic linkages (starch) but lack enzymes for β-linkages (cellulose)</b><br><br><i>Explanation:</i> Cellulose contains straight β-1,4 glucose chains that human digestive enzymes cannot break."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #10',
+                question: "MC 10: Which storage polysaccharide is used by animals to store glucose in liver and muscle cells?\n\nA) Amylose\nB) Cellulose\nC) Glycogen\nD) Chitin",
+                answer: "<b>Correct Answer: C) Glycogen</b><br><br><i>Explanation:</i> Glycogen is a highly branched animal glucose polymer."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #11',
+                question: "MC 11: Unsaturated fatty acids are liquid at room temperature because:\n\nA) They lack double bonds and pack tightly\nB) Cis double bonds create kinks that prevent tight packing\nC) They contain glycerol rings\nD) They form ionic salts",
+                answer: "<b>Correct Answer: B) Cis double bonds create kinks that prevent tight packing</b><br><br><i>Explanation:</i> Kinks from double bonds maintain fluidity at room temp (e.g. plant oils)."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #12',
+                question: "MC 12: Triacylglycerol (a fat) is composed of:\n\nA) 1 Nucleotide + 3 Amino acids\nB) 1 Glycerol molecule + 3 Fatty Acid chains\nC) 3 Monosaccharides + 1 Phosphate\nD) 4 Fused carbon rings",
+                answer: "<b>Correct Answer: B) 1 Glycerol molecule + 3 Fatty Acid chains</b><br><br><i>Explanation:</i> Joined by ester linkages via dehydration reactions."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #13',
+                question: "MC 13: What makes phospholipids ideal for creating biological cell membranes?\n\nA) They are completely hydrophilic\nB) They are amphipathic (hydrophilic head + hydrophobic fatty acid tails)\nC) They consist of 4 fused carbon rings\nD) They form rigid covalent lattices",
+                answer: "<b>Correct Answer: B) They are amphipathic (hydrophilic head + hydrophobic fatty acid tails)</b><br><br><i>Explanation:</i> In water, phospholipids self-assemble into a bilayer with tails pointing inward."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #14',
+                question: "MC 14: Cholesterol and sex hormones (estrogen/testosterone) belong to which lipid class?\n\nA) Phospholipids\nB) Steroids\nC) Triglycerides\nD) Polysaccharides",
+                answer: "<b>Correct Answer: B) Steroids</b><br><br><i>Explanation:</i> Steroids are nonpolar lipids defined by a 4-fused-ring carbon skeleton."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #15',
+                question: "MC 15: Which bond joins individual amino acids together in a polypeptide chain?\n\nA) Glycosidic linkage\nB) Peptide bond\nC) Hydrogen bond\nD) Ionic bond",
+                answer: "<b>Correct Answer: B) Peptide bond</b><br><br><i>Explanation:</i> A covalent peptide bond forms between carboxyl (-COOH) and amino (-NH₂) groups."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #16',
+                question: "MC 16: The Primary (1°) structure of a protein refers to:\n\nA) Coils and folds (α-helix / β-sheet)\nB) Linear sequence of amino acids in the chain\nC) 3D R-group interactions\nD) Aggregation of multiple subunits",
+                answer: "<b>Correct Answer: B) Linear sequence of amino acids in the chain</b><br><br><i>Explanation:</i> Dictated directly by genetic DNA code."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #17',
+                question: "MC 17: Secondary (2°) protein folding (α-helices and β-sheets) is stabilized by:\n\nA) Peptide bonds\nB) Hydrogen bonds along the polypeptide backbone\nC) Disulfide bridges between R-groups\nD) Ionic bonds between side chains",
+                answer: "<b>Correct Answer: B) Hydrogen bonds along the polypeptide backbone</b><br><br><i>Explanation:</i> H-bonds form between repeating oxygen and nitrogen atoms of the backbone."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #18',
+                question: "MC 18: Tertiary (3°) protein shape is primarily determined by interactions between:\n\nA) The pentose sugar and phosphate\nB) Amino acid R-groups (side chains)\nC) Cis and trans double bonds\nD) Nitrogenous bases",
+                answer: "<b>Correct Answer: B) Amino acid R-groups (side chains)</b><br><br><i>Explanation:</i> Includes hydrophobic interactions, ionic bonds, H-bonds, and disulfide bridges."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #19',
+                question: "MC 19: Strong covalent bonds called disulfide bridges form between the R-groups of which amino acid?\n\nA) Glycine\nB) Cysteine\nC) Alanine\nD) Lysine",
+                answer: "<b>Correct Answer: B) Cysteine</b><br><br><i>Explanation:</i> Two sulfhydryl groups (-SH) react to form a covalent -S-S- cross-link."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #20',
+                question: "MC 20: Hemoglobin consists of 4 individual polypeptide subunits working together. This represents:\n\nA) Primary structure\nB) Secondary structure\nC) Tertiary structure\nD) Quaternary structure",
+                answer: "<b>Correct Answer: D) Quaternary structure</b><br><br><i>Explanation:</i> Quaternary structure exists when 2 or more polypeptide chains unite."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #21',
+                question: "MC 21: What happens when a protein undergoes denaturation?\n\nA) It breaks into free nucleotides\nB) It loses its 3D shape and biological function due to heat/pH changes\nC) It forms extra disulfide bridges\nD) It converts into a carbohydrate",
+                answer: "<b>Correct Answer: B) It loses its 3D shape and biological function due to heat/pH changes</b><br><br><i>Explanation:</i> Denaturation unfolds weak non-covalent interactions."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #22',
+                question: "MC 22: Which nitrogenous bases are classified as double-ring PURINES?\n\nA) Cytosine and Thymine\nB) Adenine and Guanine\nC) Uracil and Cytosine\nD) Adenine and Thymine",
+                answer: "<b>Correct Answer: B) Adenine and Guanine</b><br><br><i>Explanation:</i> Purines (A & G) have a 6-membered ring fused to a 5-membered ring. (Pure As Gold)."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #23',
+                question: "MC 23: Which base is found ONLY in RNA and replaces Thymine?\n\nA) Cytosine\nB) Guanine\nC) Uracil\nD) Adenine",
+                answer: "<b>Correct Answer: C) Uracil</b><br><br><i>Explanation:</i> RNA uses Uracil (U); DNA uses Thymine (T)."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #24',
+                question: "MC 24: Nucleotides in a single nucleic acid strand are joined together by:\n\nA) Glycosidic linkages\nB) Phosphodiester bonds\nC) Peptide bonds\nD) Hydrogen bonds",
+                answer: "<b>Correct Answer: B) Phosphodiester bonds</b><br><br><i>Explanation:</i> Phosphodiester bonds link the 3' -OH of one sugar to the 5' phosphate of the next."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #25',
+                question: "MC 25: If a sample of double-stranded DNA contains 30% Adenine (A), what percentage of Cytosine (C) will it contain?\n\nA) 30%\nB) 20%\nC) 40%\nD) 70%",
+                answer: "<b>Correct Answer: B) 20%</b><br><br><i>Explanation:</i> A=30% so T=30% (Total A+T = 60%). Remaining 40% is split equally between G (20%) and C (20%)."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #26',
+                question: "MC 26: What pentose sugar is found in DNA?\n\nA) Ribose\nB) Deoxyribose\nC) Glucose\nD) Fructose",
+                answer: "<b>Correct Answer: B) Deoxyribose</b><br><br><i>Explanation:</i> Deoxyribose lacks an oxygen atom at the 2' carbon position compared to Ribose."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #27',
+                question: "MC 27: Chitin is a structural polysaccharide found in:\n\nA) Plant cell walls\nB) Fungal cell walls and arthropod exoskeletons\nC) Human liver cells\nD) Bacterial flagella",
+                answer: "<b>Correct Answer: B) Fungal cell walls and arthropod exoskeletons</b><br><br><i>Explanation:</i> Chitin includes a nitrogen-containing monomer appendage."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #28',
+                question: "MC 28: Saturated fats are termed \"saturated\" because:\n\nA) They are saturated with oxygen\nB) Their carbon skeleton is fully saturated with Hydrogen atoms (no double bonds)\nC) They dissolve completely in water\nD) They contain maximum double bonds",
+                answer: "<b>Correct Answer: B) Their carbon skeleton is fully saturated with Hydrogen atoms (no double bonds)</b><br><br><i>Explanation:</i> Every available carbon spot holds a single-bonded Hydrogen."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #29',
+                question: "MC 29: Molecular chaperones (chaperonins) are cellular helper proteins that:\n\nA) Synthesize DNA\nB) Assist in the proper folding of other proteins\nC) Break down fatty acids\nD) Transport oxygen in blood",
+                answer: "<b>Correct Answer: B) Assist in the proper folding of other proteins</b><br><br><i>Explanation:</i> Chaperonins provide an isolated environment for polypeptides to fold correctly."
+            },
+            {
+                category: 'ch3_mc ch3',
+                categoryLabel: 'Ch 3 MC #30',
+                question: "MC 30: Why are Carbon-Hydrogen (C-H) bonds in hydrocarbons rich in energy?\n\nA) Nonpolar covalent bonds hold high potential energy that is released when oxidized\nB) They are ionic bonds\nC) They absorb sunlight\nD) They form rigid crystal lattices",
+                answer: "<b>Correct Answer: A) Nonpolar covalent bonds hold high potential energy that is released when oxidized</b><br><br><i>Explanation:</i> Hydrocarbons store high amounts of energy in their C-H bonds."
+            },
+
+            // ==========================================
+            // SECTION 4: NOMENCLATURE & ISOMERS (9 CARDS)
+            // ==========================================
+            {
+                category: 'nom',
+                categoryLabel: 'Nomenclature',
+                question: "IUPAC Prefix Rules: What are the prefixes for carbon chain lengths 1 through 10?",
+                answer: "<ul><li>1 = <b>meth-</b></li><li>2 = <b>eth-</b></li><li>3 = <b>prop-</b></li><li>4 = <b>but-</b></li><li>5 = <b>pent-</b></li><li>6 = <b>hex-</b></li><li>7 = <b>hept-</b></li><li>8 = <b>oct-</b></li><li>9 = <b>non-</b></li><li>10 = <b>dec-</b></li></ul>"
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Nomenclature',
+                question: "What do the suffixes -ane, -ene, and -yne represent in hydrocarbon names?",
+                answer: "<ul><li><code>-ane</code> = All single C-C bonds (Alkane)</li><li><code>-ene</code> = At least one double C=C bond (Alkene)</li><li><code>-yne</code> = At least one triple C≡C bond (Alkyne)</li></ul>"
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Nomenclature',
+                question: "How are halogen substituents named in organic molecules?",
+                answer: "<ul><li>-F → <b>fluoro-</b></li><li>-Cl → <b>chloro-</b></li><li>-Br → <b>bromo-</b></li><li>-I → <b>iodo-</b></li></ul>"
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Isomers Practice',
+                question: "What is the structural relationship between Glucose and Fructose?",
+                answer: "They are <b>Structural Isomers</b> (both share formula C₆H₁₂O₆, but glucose contains an aldehyde carbonyl while fructose contains a ketone carbonyl)."
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Nomenclature Practice',
+                question: "Name a 3-carbon alkane with a Chlorine attached to Carbon 2.",
+                answer: "<b>2-chloropropane</b>"
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Nomenclature Practice',
+                question: "Name a 5-carbon alkane with methyl groups on carbons 2 and 3.",
+                answer: "<b>2,3-dimethylpentane</b>"
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Functional Groups',
+                question: "Which functional groups are present in ALL amino acids?",
+                answer: "An <b>Amino group</b> (-NH₂) and a <b>Carboxyl group</b> (-COOH)."
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Functional Groups',
+                question: "Which functional group is characterized by a phosphorus atom bonded to four oxygen atoms?",
+                answer: "<b>Phosphate Group (-OPO₃²⁻)</b>. Crucial for energy transfer (ATP) and nucleic acid backbones."
+            },
+            {
+                category: 'nom',
+                categoryLabel: 'Functional Groups',
+                question: "Which functional group forms disulfide bridges (-S-S-) to stabilize 3D protein structures?",
+                answer: "<b>Sulfhydryl Group (-SH)</b> (found in the amino acid Cysteine)."
+            }
+        ];
+
+        let currentFilter = 'all';
+        let filteredCards = [...cardsData];
+        let currentIndex = 0;
+        let reviewList = new Set();
+
+        function updateCardDisplay() {
+            if (filteredCards.length === 0) {
+                document.getElementById('card-question').innerText = "No cards found in this filter!";
+                document.getElementById('card-answer').innerHTML = "Select another filter above.";
+                document.getElementById('card-num').innerText = "0 / 0";
+                document.getElementById('card-num-back').innerText = "0 / 0";
+                return;
+            }
+
+            const card = filteredCards[currentIndex];
+            const isFlipped = document.getElementById('card').classList.contains('flipped');
+
+            if (isFlipped) {
+                document.getElementById('card').classList.remove('flipped');
+                setTimeout(() => renderCardData(card), 200);
+            } else {
+                renderCardData(card);
+            }
+
+            const progress = ((currentIndex + 1) / filteredCards.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('review-count').innerText = reviewList.size;
+        }
+
+        function renderCardData(card) {
+            document.getElementById('card-question').innerText = card.question;
+            document.getElementById('card-answer').innerHTML = card.answer;
+            document.getElementById('card-num').innerText = `Card ${currentIndex + 1} / ${filteredCards.length}`;
+            document.getElementById('card-num-back').innerText = `Card ${currentIndex + 1} / ${filteredCards.length}`;
+
+            const badgeFront = document.getElementById('card-badge');
+            const badgeBack = document.getElementById('card-badge-back');
+            badgeFront.innerText = card.categoryLabel;
+            badgeBack.innerText = card.categoryLabel;
+
+            badgeFront.className = 'badge ' + card.category.split(' ')[0];
+            badgeBack.className = 'badge ' + card.category.split(' ')[0];
+        }
+
+        function flipCard() {
+            document.getElementById('card').classList.toggle('flipped');
+        }
+
+        function nextCard(e) {
+            if (e) e.stopPropagation();
+            if (filteredCards.length === 0) return;
+            currentIndex = (currentIndex + 1) % filteredCards.length;
+            updateCardDisplay();
+        }
+
+        function prevCard(e) {
+            if (e) e.stopPropagation();
+            if (filteredCards.length === 0) return;
+            currentIndex = (currentIndex - 1 + filteredCards.length) % filteredCards.length;
+            updateCardDisplay();
+        }
+
+        function markReview(e, needsReview) {
+            if (e) e.stopPropagation();
+            const currentCardObj = filteredCards[currentIndex];
+            if (needsReview) {
+                reviewList.add(currentCardObj);
+            } else {
+                reviewList.delete(currentCardObj);
+            }
+            document.getElementById('review-count').innerText = reviewList.size;
+            nextCard();
+        }
+
+        function filterCards(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (type === 'all') {
+                filteredCards = [...cardsData];
+            } else if (type === 'frq') {
+                filteredCards = cardsData.filter(c => c.category.includes('frq'));
+            } else if (type === 'ch2_mc') {
+                filteredCards = cardsData.filter(c => c.category.includes('ch2_mc'));
+            } else if (type === 'ch3_mc') {
+                filteredCards = cardsData.filter(c => c.category.includes('ch3_mc'));
+            } else if (type === 'nom') {
+                filteredCards = cardsData.filter(c => c.category.includes('nom'));
+            } else if (type === 'review') {
+                filteredCards = Array.from(reviewList);
+            }
+
+            currentIndex = 0;
+            updateCardDisplay();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                flipCard();
+            } else if (e.code === 'ArrowRight') {
+                nextCard();
+            } else if (e.code === 'ArrowLeft') {
+                prevCard();
+            } else if (e.key === '1') {
+                markReview(null, true);
+            } else if (e.key === '2') {
+                markReview(null, false);
+            }
+        });
+
+        updateCardDisplay();
+    </script>
+</body>
+</html>
